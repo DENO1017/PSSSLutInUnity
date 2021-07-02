@@ -3,15 +3,14 @@
     Properties
     {
         _Max1R("Max 1/Radiance", float) = 1
-        _Test("Test", Range(-3,3)) = 0
         [KeywordEnum(NormDiff, G1, G2)] _Radiance ("Radiance Profile type", Float) = 0
         _D ("D", Vector) = (1,1,1,1)
         _DiffColor1 ("NormDiff Color 1", Color) = (1,1,1,1)
         _DiffColor2 ("NormDiff Color 2", Color) = (0,0,0,0)
         _DiffColor3 ("NormDiff Color 2", Color) = (0,0,0,0)
         _DiffColor4 ("NormDiff Color 2", Color) = (0,0,0,0)
-        [KeywordEnum(None, Uncharted, ACES)] _Tone ("Tone type", Float) = 0
-        _AdaptedLum ("Uncharted-AdaptedLum", float) = 1
+        // [KeywordEnum(None, Uncharted, ACES)] _Tone ("Tone type", Float) = 0
+        // _AdaptedLum ("Uncharted-AdaptedLum", float) = 1
         [Toggle] _Gamma ("Gamma", Float) = 0
     }
     SubShader
@@ -27,11 +26,10 @@
 
             #pragma shader_feature _GAMMA_ON
             #pragma multi_compile _RADIANCE_NORMDIFF _RADIANCE_G1 _RADIANCE_G2
-            #pragma multi_compile _TONE_NONE _TONE_UNCHARTED _TONE_ACES
+            // #pragma multi_compile _TONE_NONE _TONE_UNCHARTED _TONE_ACES
             #include "SSSCore.cginc"
             float _Max1R;
             float _AdaptedLum;
-            float _Test;
 
 
             float3 F(float3 x)
@@ -87,14 +85,13 @@
                     }
                     b += 0.05;
                 }
-                totalLight *= 2;
-                #if _TONE_UNCHARTED
-                    float3 rgb = Uncharted2ToneMapping(totalLight/totalWeights);
-                #elif _TONE_ACES
-                    float3 rgb = ACESToneMapping(totalLight/totalWeights);
-                #else
+                // #if _TONE_UNCHARTED
+                //     float3 rgb = Uncharted2ToneMapping(totalLight/totalWeights);
+                // #elif _TONE_ACES
+                //     float3 rgb = ACESToneMapping(totalLight/totalWeights);
+                // #else
                     float3 rgb = totalLight/totalWeights;
-                #endif
+                // #endif
 
                 #if _GAMMA_ON
                     rgb = pow(rgb, 1/2.2);//转换到Gamma空间
