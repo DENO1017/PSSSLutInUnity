@@ -61,14 +61,13 @@ float3 CalcGuss(float distance)
 
 float NormDiff(float r, float d)
 {
-    return (exp(-r/d) + exp(-r/(3 * d)) / (8 * PI * d * r));
+    return saturate(exp(-r/d) + exp(-r/(3 * d)) / (8 * PI * d * r));
 }
 
 float3 CalcNorm(float distance)
 {
     float3 rgb = float3(0,0,0);
-    // half sum = 1 / (_DiffColor1.a + _DiffColor2.a + _DiffColor3.a + _DiffColor4.a);
-    half sum = 1;
+    half sum = 1 / (_DiffColor1.a + _DiffColor2.a + _DiffColor3.a + _DiffColor4.a);
     rgb += NormDiff(distance,_D.x) * _DiffColor1.rgb *  _DiffColor1.a * sum;
     rgb += NormDiff(distance,_D.y) * _DiffColor2.rgb *  _DiffColor2.a * sum;
     rgb += NormDiff(distance,_D.z) * _DiffColor3.rgb *  _DiffColor3.a * sum;
